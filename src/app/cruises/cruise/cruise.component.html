@@ -1,0 +1,104 @@
+<form #form="ngForm" autocomplete="off" *ngIf="service.formData" (submit)="onSubmit(form)">
+        <input type="hidden" name="cruiseId" #cruiseId="ngModel" [(ngModel)]="service.formData.id">
+    
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Cruise Id</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">#</div>
+                        </div>
+                        <input name="CruiseId" #CruiseId="ngModel" [(ngModel)]="service.formData.id" class="form-control"
+                            readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Descripton</label>
+                    <input name="Title" #Title="ngModel" [(ngModel)]="service.formData.title" class="form-control" ngModel>
+                </div>
+                <div class="form-group">
+                    <label>Departure Date</label>
+                    <input type="text" name="DepartureDate" #DepartureDate="ngModel"
+                        [(ngModel)]="service.formData.departureDate" id="DepartureDate" placeholder="Datepicker"
+                        class="form-control" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" bsDatepicker>
+                   
+                        
+                </div>
+    
+                <div class="form-check form-group">
+                    <input class="form-check-input" type="checkbox" value="false" name="FlightIncluded"
+                        #FlightIncluded="ngModel" [(ngModel)]="service.formData.flightIncluded">
+                    <label class="form-check-label" for="FlightIncluded">
+                        Flight Included
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-6">
+    
+    
+                <div class="form-group">
+                    <label>Cruise Line</label>
+                    <select name="CruiseLineId" #CruiseLineId="ngModel" [(ngModel)]="service.formData.cruiseLineId"
+                        class="form-control" [class.is-invalid]="!isValid && service.formData.cruiseLineId==0"
+                        (change)="changeCruiseLine($event.target.value)">
+                        <option value="0">-Select-</option>
+                        <option *ngFor="let item of cruiseLineList | async" value="{{item.id}}">{{item.title}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Ship</label>
+                    <select name="ShipId" #ShipId="ngModel" [(ngModel)]="service.formData.shipId" class="form-control"
+                        [class.is-invalid]="!isValid && service.formData.shipId==0"
+                        (change)="changeShips($event.target.value)">
+                        <option value="0">-Select-</option>
+                        <option *ngFor="let item of shipList | async " value="{{item.id}}">{{item.title}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Cabin Type</label>
+                    <select name="CabinTypeId" #CabinTypeId="ngModel" [(ngModel)]="service.formData.cabinTypeId"
+                        class="form-control" [class.is-invalid]="!isValid && service.formData.cabinTypeId==0">
+                        <option value="0">-Select-</option>
+                        <option *ngFor="let item of cabintypeList | async" value="{{item.id}}">{{item.title}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <!-- routes items table-->
+        <table class="table table-borderless">
+            <thead class="thead-light">
+                <th>Days</th>
+                <th>Port</th>
+                <th>
+                    <a class="btn btn-sm btn-success text-white"
+                        (click)="AddOrEditRouteItem(null,service.formData.id)"><i class="fa fa-plus"></i> Add Item</a>
+                </th>
+            </thead>
+            <tbody>
+                <tr *ngIf="service.routes.length==0" [class.text-danger]="!isValid && service.routes.length==0">
+                    <td class="font-italic text-center" colspan="5">
+                        No route item selected for this cruise.
+                    </td>
+                </tr>
+    
+                <tr *ngFor="let item of service.routes;let i=index;">
+                    <td>{{item.days}}</td>
+                    <td>{{item.portName}}</td>
+                    <td>
+                        <a class="btn btn-sm btn-info text-white" (click)="AddOrEditRouteItem(i,service.formData.id)"><i
+                                class="fa fa-pencil"></i></a>
+                        <a class="btn btn-sm btn-danger text-white ml-1" (click)="onDeleteRouteItem(item.id,i)"><i
+                                class="fa fa-trash"></i></a>
+    
+                    </td>
+                </tr>
+            </tbody>
+    
+        </table>
+        <div class="form-group">
+            <button type="submit" class="btn btn-dark"><i class="fa fa-database"></i> Submit</button>
+            <a class="btn btn-outline-dark ml-1" routerLink="/cruises"><i class="fa fa-table"></i> View Cruises</a>
+        </div>
+    
+    </form>

@@ -1,0 +1,26 @@
+<table class="table table-hover">
+        <thead class="thead-light">
+          <th>#Cruise No.</th>
+          <th>Title</th>
+          <th>CruiseLine</th>
+          <th>Ship</th>
+          <th>Cabin Type</th>
+          <th>Departure Date</th>
+          <th>
+            <a class="btn btn-outline-success" routerLink="/cruise"><i class="fa fa-plus-square"></i> Create New</a>
+          </th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of cruiseList">
+            <th (click)="openForEdit(item.id)">{{item.id}}</th>
+            <td (click)="openForEdit(item.id)">{{item.title}}</td>
+            <td (click)="openForEdit(item.id)">{{item.cruiseLineName}}</td>
+            <td (click)="openForEdit(item.id)">{{item.shipName}}</td>
+            <td (click)="openForEdit(item.id)">{{item.cabinTypeName}}</td>
+            <td (click)="openForEdit(item.id)">{{item.departureDate  | date: 'dd/MM/yyyy'}}</td>
+            <td>
+                <a class="btn text-danger" (click)="onCruiseDelete(item.id)"><i class="fa fa-trash fa-lg"></i></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
